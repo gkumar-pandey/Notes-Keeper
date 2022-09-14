@@ -1,0 +1,24 @@
+.main-container {
+  min-height: 93vh;
+  padding: 10px 0;
+}
+
+.heading {
+  padding-top: 1rem;
+  font-size: 3.9rem;
+}
+
+/* Tablet */
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 3rem;
+  }
+}
+
+/* for mobile */
+@media (max-width: 600px) {
+  .heading {
+    font-size: 2rem;
+  }
+}
