@@ -1,12 +1,24 @@
 import React from "react";
-import { Container, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {
+  Container,
+  Dropdown,
+  Form,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
     <>
       <Navbar bg="primary" expand="lg" variant="dark">
         <Container>
-          <Navbar.Brand href="#">Note Keeper</Navbar.Brand>
+          <Navbar.Brand>
+            <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
+              Note Keeper
+            </Link>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="m-auto">
@@ -24,10 +36,18 @@ function Header() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link href="#action1">Home</Nav.Link>
+              <Nav.Link>
+                <Link
+                  to="/mynotes"
+                  style={{ color: "#fff", textDecoration: "none" }}
+                >
+                  My Notes
+                </Link>
+              </Nav.Link>
 
               <NavDropdown title="Gautam kumar" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
+                <Dropdown.Divider />
                 <NavDropdown.Item href="#action4">Log Out</NavDropdown.Item>
               </NavDropdown>
             </Nav>

@@ -28,10 +28,10 @@ const CustomToggle = ({ children, eventKey }) => {
   return <div onClick={decoratedOnClick}>{children}</div>;
 };
 
-const CardComp = ({ title, content, category }) => {
+const CardComp = ({ title, content, category, key }) => {
   return (
     <>
-      <Accordion defaultActiveKey="1">
+      <Accordion defaultActiveKey="1" key={key}>
         <Card style={coustemStyle.card}>
           <Card.Header style={coustemStyle.header}>
             <span style={coustemStyle.title}>
