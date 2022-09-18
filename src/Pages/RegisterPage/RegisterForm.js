@@ -13,15 +13,17 @@ const RegisterForm = ({
   setName,
   confirmPassword,
   setConfirmPassword,
-  picture,
-  setPicture,
   submitHandler,
   message,
   loading,
+  uploadImage,
+  pictureUpload,
+  error,
 }) => {
   return (
     <div>
       {message && <ErrorAlert>{message}</ErrorAlert>}
+      {error && <ErrorAlert>{error}</ErrorAlert>}
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Name</Form.Label>
@@ -65,16 +67,25 @@ const RegisterForm = ({
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control
             type="file"
-            value={picture}
-            onChange={(e) => setPicture(e.target.files[0])}
+            onChange={(e) => uploadImage(e.target.files[0])}
           />
         </Form.Group>
         {loading ? (
           <Loader />
         ) : (
-          <Button variant="primary" type="submit">
-            Register
-          </Button>
+          <>
+            {pictureUpload ? (
+              <Loader title={"Uploading..."} />
+            ) : (
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={pictureUpload ? true : false}
+              >
+                Register
+              </Button>
+            )}
+          </>
         )}
       </Form>
       <div className="mt-3">

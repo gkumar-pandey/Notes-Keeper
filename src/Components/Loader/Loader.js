@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Spinner } from "react-bootstrap";
 
-const Loader = () => {
+const Loader = ({ title }) => {
   return (
     <div>
       <Button variant="primary" disabled>
@@ -12,7 +12,7 @@ const Loader = () => {
           role="status"
           aria-hidden="true"
         />
-        Loading...
+        {title ? title : "Loading...."}
       </Button>
     </div>
   );
