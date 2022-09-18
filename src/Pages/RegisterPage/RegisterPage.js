@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import Mainscreen from "../../Components/MainScreen/Mainscreen";
 import RegisterForm from "./RegisterForm";
@@ -9,10 +10,41 @@ const RegisterPage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
   const [picture, setPicture] = useState("");
+  const [message, setMessage] = useState("");
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage("Passwords Do Not Match");
+    } else {
+      setMessage(null);
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+
+        setLoading(true);
+        const { data } = await axios.post(
+          "/api/users",
+          {
+            name,
+            email,
+            password,
+            picture,
+          },
+          config
+        );
+        setLoading(false);
+        localStorage.setItem("userInfo", JSON.stringify(data));
+      } catch (error) {
+        setError(error.response.data.message);
+        setLoading(false);
+      }
+    }
   };
+
   return (
     <div>
       <Mainscreen title={"Register"}>
@@ -28,6 +60,8 @@ const RegisterPage = () => {
           setConfirmPassword={setConfirmPassword}
           setPicture={setPicture}
           submitHandler={submitHandler}
+          message={message}
+          loading={loading}
         />
       </Mainscreen>
     </div>
