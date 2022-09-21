@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import Mainscreen from "../../Components/MainScreen/Mainscreen";
 import LoginForm from "./LoginForm";
 import ErrorAlert from "../../Components/Error/ ErrorAlert";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -28,8 +30,8 @@ const LoginPage = () => {
         config
       );
       localStorage.setItem("userInfo", JSON.stringify(data));
-
       setLoading(false);
+      navigate("/mynotes");
     } catch (err) {
       setError(err.response.data.message);
       setLoading(false);
