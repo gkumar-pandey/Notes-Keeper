@@ -3,13 +3,48 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
+  USER_REGISTRATION_FAIL,
+  USER_REGISTRATION_REQUEST,
+  USER_REGISTRATION_SUCCESS,
 } from "../Constants/userConstants";
 import axios from "axios";
 
-export const login = (email, password) => async (dispatch) => {
-  // e.preventDefault();
-  // setLoading(true);
+export const registration =
+  (name, email, password, picture) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_REGISTRATION_REQUEST });
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
 
+      const { data } = await axios.post(
+        "/api/users",
+        {
+          name,
+          email,
+          password,
+          picture,
+        },
+        config
+      );
+
+      dispatch({ type: USER_REGISTRATION_SUCCESS, payload: data });
+      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_REGISTRATION_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
     const config = {
@@ -27,8 +62,6 @@ export const login = (email, password) => async (dispatch) => {
     );
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem("userInfo", JSON.stringify(data));
-    // setLoading(false);
-    // navigate("/mynotes");
   } catch (err) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -37,9 +70,6 @@ export const login = (email, password) => async (dispatch) => {
           ? err.response.data.message
           : err.message,
     });
-
-    // setError(err.response.data.message);
-    // setLoading(false);
   }
 };
 

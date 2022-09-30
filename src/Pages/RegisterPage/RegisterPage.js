@@ -1,51 +1,39 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Mainscreen from "../../Components/MainScreen/Mainscreen";
 import RegisterForm from "./RegisterForm";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registration } from "../../Store/Actions/userActions";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  // const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(null);
   const [picture, setPicture] = useState("");
   const [message, setMessage] = useState("");
   const [pictureUpload, setPictureUpload] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userRegistration = useSelector((state) => state.userRegistration);
+  const { loading, error, userInfo } = userRegistration;
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/mynotes");
+    }
+  }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords Do Not Match");
     } else {
+      dispatch(registration(name, email, password, picture));
       setMessage(null);
-      try {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
-
-        setLoading(true);
-        const { data } = await axios.post(
-          "/api/users",
-          {
-            name,
-            email,
-            password,
-            picture,
-          },
-          config
-        );
-        setLoading(false);
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        navigate("/login");
-      } catch (error) {
-        setError(error.response.data.message);
-        setLoading(false);
-      }
     }
   };
 
